@@ -1,0 +1,16 @@
+{
+  "name": "Alexis Ferreras",
+  "short_name": "Alexis Ferreras",
+  "description": "Conviértete en Asesor de Seguros sin experiencia previa",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#6C3CE1",
+  "icons": [
+    {
+      "src": "https://cdn.vozana.ai/media/pages/ca5161d1-a68a-4850-8d51-f5cbfaa6f19a/insurance_agent_vsl/41a9d1d1-6b92-4f57-a226-48416d18dd0a.png",
+      "sizes": "any",
+      "type": "image/png"
+    }
+  ]
+}
