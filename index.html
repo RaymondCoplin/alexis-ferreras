@@ -567,6 +567,7 @@
             return r.json();
           })
           .then(function () {
+            fbq('track', 'Lead');
             if (CONFIRM_SLUG) {
               window.location.href = '/p/' + CONFIRM_SLUG;
             } else {
