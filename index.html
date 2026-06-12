@@ -103,8 +103,16 @@
     .bk-form-slot-label { font-size: 11px; font-weight: 500; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
     .bk-field { margin-bottom: 14px; }
     .bk-field label { display: block; font-size: 11px; font-weight: 600; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
-    .bk-field input { width: 100%; padding: 11px 14px; border: 1.5px solid #e5e7eb; border-radius: 8px; font-size: 14px; color: #111; font-family: 'Inter', sans-serif; transition: border-color 0.2s; }
-    .bk-field input:focus { outline: none; border-color: var(--accent); }
+    .bk-field input:not([type="radio"]):not([type="checkbox"]), .bk-field select { width: 100%; padding: 11px 14px; border: 1.5px solid #e5e7eb; border-radius: 8px; font-size: 14px; color: #111; font-family: 'Inter', sans-serif; transition: border-color 0.2s; background: #fff; appearance: none; }
+    .bk-field input:not([type="radio"]):not([type="checkbox"]):focus, .bk-field select:focus { outline: none; border-color: var(--accent); }
+    .bk-field select { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+    .bk-radio-group { display: flex; flex-direction: row; gap: 20px; flex-wrap: wrap; }
+    .bk-radio-group label { display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 400; color: #333; text-transform: none; letter-spacing: 0; cursor: pointer; }
+    .bk-radio-group input[type="radio"] { appearance: none; -webkit-appearance: none; width: 17px; height: 17px; border: 2px solid #aaa; border-radius: 50%; flex-shrink: 0; cursor: pointer; transition: border-color 0.15s; position: relative; }
+    .bk-radio-group input[type="radio"]:checked { border-color: var(--accent); border-width: 5px; }
+    .bk-consent { display: flex; align-items: flex-start; gap: 10px; margin-top: 4px; margin-bottom: 6px; padding: 12px 14px; background: #f9fafb; border-radius: 8px; border: 1.5px solid #e5e7eb; }
+    .bk-consent input[type="checkbox"] { accent-color: var(--accent); width: 16px; height: 16px; flex-shrink: 0; margin-top: 2px; }
+    .bk-consent span { font-size: 12px; color: #555; line-height: 1.5; }
     .bk-submit { width: 100%; padding: 14px; background: var(--accent); color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 6px; transition: opacity 0.2s; font-family: 'Inter', sans-serif; }
     .bk-submit:hover { opacity: 0.9; }
     .bk-submit:disabled { opacity: 0.6; cursor: default; }
@@ -310,6 +318,37 @@
             <div class="bk-field">
               <label for="bk-email">Correo electrónico *</label>
               <input id="bk-email" name="email" type="email" placeholder="tu@correo.com" required autocomplete="email" />
+            </div>
+            <div class="bk-field">
+              <label for="bk-state">Estado *</label>
+              <select id="bk-state" name="state" required>
+                <option value="" disabled selected>Selecciona tu estado</option>
+                <option>Alabama</option><option>Alaska</option><option>Arizona</option><option>Arkansas</option>
+                <option>California</option><option>Colorado</option><option>Connecticut</option><option>Delaware</option>
+                <option>Florida</option><option>Georgia</option><option>Hawaii</option><option>Idaho</option>
+                <option>Illinois</option><option>Indiana</option><option>Iowa</option><option>Kansas</option>
+                <option>Kentucky</option><option>Louisiana</option><option>Maine</option><option>Maryland</option>
+                <option>Massachusetts</option><option>Michigan</option><option>Minnesota</option><option>Mississippi</option>
+                <option>Missouri</option><option>Montana</option><option>Nebraska</option><option>Nevada</option>
+                <option>New Hampshire</option><option>New Jersey</option><option>New Mexico</option><option>New York</option>
+                <option>North Carolina</option><option>North Dakota</option><option>Ohio</option><option>Oklahoma</option>
+                <option>Oregon</option><option>Pennsylvania</option><option>Rhode Island</option><option>South Carolina</option>
+                <option>South Dakota</option><option>Tennessee</option><option>Texas</option><option>Utah</option>
+                <option>Vermont</option><option>Virginia</option><option>Washington</option><option>West Virginia</option>
+                <option>Wisconsin</option><option>Wyoming</option>
+              </select>
+            </div>
+            <div class="bk-field">
+              <label>¿Qué documentos tienes? *</label>
+              <div class="bk-radio-group">
+                <label><input type="radio" name="documents" value="Social" required /> Social</label>
+                <label><input type="radio" name="documents" value="ITIN" /> ITIN</label>
+                <label><input type="radio" name="documents" value="Ninguno" /> Ninguno</label>
+              </div>
+            </div>
+            <div class="bk-consent">
+              <input type="checkbox" id="bk-consent" name="consent" required />
+              <span>Doy mi consentimiento para recibir un mensaje vía WhatsApp o una llamada de un representante.</span>
             </div>
             <button type="submit" class="bk-submit">Confirmar llamada</button>
             <div class="bk-error" id="bk-form-error" style="display:none"></div>
@@ -552,7 +591,8 @@
         btn.textContent = 'Agendando...';
 
         var fd = new FormData(e.target);
-        var body = JSON.stringify({ name: fd.get('name'), phone: fd.get('phone'), email: fd.get('email') });
+        var consentText = 'Doy mi consentimiento para recibir un mensaje vía WhatsApp o una llamada de un representante.';
+        var body = JSON.stringify({ name: fd.get('name'), phone: fd.get('phone'), email: fd.get('email'), state: fd.get('state'), documents: fd.get('documents'), whatsapp_consent: fd.get('consent') === 'on', consent_timestamp: new Date().toISOString(), consent_text: consentText });
 
         fetch(API_BASE + '/api/v1/public/pages/' + PAGE_SLUG + '/slots/' + selectedSlot.id + '/book', {
           method: 'POST',
