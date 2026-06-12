@@ -599,7 +599,7 @@
 
         var fd = new FormData(e.target);
         var consentText = 'Doy mi consentimiento para recibir un mensaje vía WhatsApp o una llamada de un representante.';
-        var body = JSON.stringify({ name: fd.get('name'), phone: fd.get('phone'), email: fd.get('email'), state: fd.get('state'), documents: fd.get('documents'), criminal_record: fd.get('criminal_record'), whatsapp_consent: fd.get('consent') === 'on', consent_timestamp: new Date().toISOString(), consent_text: consentText });
+        var body = JSON.stringify({ name: fd.get('name'), phone: fd.get('phone'), email: fd.get('email'), state: fd.get('state'), documents: fd.get('documents'), criminal_record: fd.get('criminal_record'), whatsapp_consent: fd.get('consent') === 'on', consent_timestamp: new Date().toISOString(), consent_text: consentText, appointment_datetime: selectedSlot.start_datetime });
 
         fetch(API_BASE + '/api/v1/public/pages/' + PAGE_SLUG + '/slots/' + selectedSlot.id + '/book', {
           method: 'POST',
