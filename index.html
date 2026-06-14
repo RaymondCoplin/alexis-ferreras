@@ -614,7 +614,7 @@
             return r.json();
           })
           .then(function () {
-            fbq('track', 'Lead');
+            fbq('track', 'Lead', { currency: 'USD', value: 0 });
             if (CONFIRM_SLUG) {
               window.location.href = '/p/' + CONFIRM_SLUG;
             } else {
