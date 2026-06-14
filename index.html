@@ -266,6 +266,26 @@
           <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
           <span id="bk-info-date-text"></span>
         </div>
+        <div id="bk-benefits" style="margin-top:20px;display:none">
+          <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:12px;">Qué ganarás</div>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:rgba(255,255,255,0.85);line-height:1.4;">
+              <span style="color:#6C3CE1;font-size:15px;flex-shrink:0;">✅</span> Ingresos sin límite — tú controlas cuánto ganas
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:rgba(255,255,255,0.85);line-height:1.4;">
+              <span style="color:#6C3CE1;font-size:15px;flex-shrink:0;">✅</span> Trabaja desde casa o donde quieras
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:rgba(255,255,255,0.85);line-height:1.4;">
+              <span style="color:#6C3CE1;font-size:15px;flex-shrink:0;">✅</span> Sin experiencia previa necesaria
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:rgba(255,255,255,0.85);line-height:1.4;">
+              <span style="color:#6C3CE1;font-size:15px;flex-shrink:0;">✅</span> Entrenamiento completo incluido
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:rgba(255,255,255,0.85);line-height:1.4;">
+              <span style="color:#6C3CE1;font-size:15px;flex-shrink:0;">✅</span> Flexibilidad de horario total
+            </div>
+          </div>
+        </div>
         <div class="bk-calendar-wrap" id="bk-calendar-wrap" style="display:none">
           <div class="bk-cal-title">Fecha &amp; Hora</div>
           <div id="bk-calendar"></div>
@@ -298,31 +318,18 @@
           <span class="bk-success-sub" id="bk-success-sub"></span>
         </div>
         <div class="bk-state" id="bk-prompt" style="display:none">
-          <span style="font-size:28px">👈</span>
-          <span style="color:#111;font-weight:600">Selecciona una fecha</span>
-          <span>Elige un día disponible en el calendario</span>
-        </div>
-        <!-- Times panel -->
-        <div id="bk-times-panel" style="display:none; flex-direction:column; height:100%;">
-          <div class="bk-times-header" id="bk-times-date"></div>
-          <div class="bk-times-scroll">
-            <button class="bk-times-back" onclick="bkBackToCalendar()">
-              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
-              Volver al calendario
-            </button>
-            <div id="bk-times-list"></div>
-          </div>
-        </div>
-        <!-- Form step -->
-        <div class="bk-form-panel" id="bk-form" style="display:none">
-          <button class="bk-form-back" onclick="bkBackToSlots()">
-            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-            Cambiar horario
+          <span style="font-size:28px">📅</span>
+          <span style="color:#111;font-weight:600">Elige una fecha disponible</span>
+          <span>Selecciona un día en el calendario</span>
+          <button class="bk-form-back" onclick="bkBackToPreForm()" style="margin-top:12px;">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+            Cambiar mis datos
           </button>
-          <div class="bk-form-slot">
-            <div class="bk-form-slot-label">Horario seleccionado</div>
-            <div id="bk-form-slot-label"></div>
-          </div>
+        </div>
+        <!-- Pre-form step: shown first after slots load -->
+        <div class="bk-form-panel" id="bk-pre-form" style="display:none">
+          <p style="font-size:15px;font-weight:700;color:#111;margin:0 0 4px;">Cuéntanos sobre ti</p>
+          <p style="font-size:13px;color:#777;margin:0 0 20px;">Completa tus datos y luego elige tu fecha.</p>
           <form id="bk-lead-form" autocomplete="on">
             <div class="bk-field">
               <label for="bk-name">Nombre completo *</label>
@@ -374,9 +381,40 @@
               <input type="checkbox" id="bk-consent" name="consent" required />
               <span>Doy mi consentimiento para recibir un mensaje vía WhatsApp o una llamada de un representante.</span>
             </div>
-            <button type="submit" class="bk-submit">Confirmar llamada</button>
-            <div class="bk-error" id="bk-form-error" style="display:none"></div>
+            <button type="submit" class="bk-submit">Siguiente — Elige tu fecha →</button>
           </form>
+        </div>
+        <!-- Times panel -->
+        <div id="bk-times-panel" style="display:none; flex-direction:column; height:100%;">
+          <div class="bk-times-header" id="bk-times-date"></div>
+          <div class="bk-times-scroll">
+            <button class="bk-times-back" onclick="bkBackToCalendar()">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+              Volver al calendario
+            </button>
+            <button class="bk-times-back" onclick="bkBackToPreForm()">
+              <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+              Cambiar mis datos
+            </button>
+            <div id="bk-times-list"></div>
+          </div>
+        </div>
+        <!-- Confirmation step -->
+        <div class="bk-form-panel" id="bk-form" style="display:none">
+          <button class="bk-form-back" onclick="bkBackToSlots()">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+            Cambiar horario
+          </button>
+          <button class="bk-form-back" onclick="bkBackToPreForm()">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+            Cambiar mis datos
+          </button>
+          <div class="bk-form-slot">
+            <div class="bk-form-slot-label">Horario seleccionado</div>
+            <div id="bk-form-slot-label"></div>
+          </div>
+          <button type="button" class="bk-submit" id="bk-confirm-btn" onclick="bkConfirmBooking()">Confirmar llamada</button>
+          <div class="bk-error" id="bk-form-error" style="display:none"></div>
         </div>
       </div>
     </div>
@@ -410,6 +448,7 @@
     var selectedDate = null;
     var selectedSlot = null;
     var currentMonth = null;
+    var preFormData = null;
 
     var tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
@@ -548,6 +587,18 @@
       setDisplay('bk-times-panel', 'flex');
     };
 
+    window.bkBackToPreForm = function () {
+      setDisplay('bk-prompt', 'none');
+      setDisplay('bk-times-panel', 'none');
+      setDisplay('bk-form', 'none');
+      setDisplay('bk-calendar-wrap', 'none');
+      setDisplay('bk-info-date', 'none');
+      selectedSlot = null;
+      selectedDate = null;
+      setDisplay('bk-pre-form', 'block');
+      setDisplay('bk-benefits', 'block');
+    };
+
     window.bkBackToCalendar = function () {
       setDisplay('bk-times-panel', 'none');
       setDisplay('bk-prompt', 'flex');
@@ -607,30 +658,48 @@
 
           var first = new Date(slots[0].start_datetime);
           currentMonth = new Date(first.getFullYear(), first.getMonth(), 1);
-          setDisplay('bk-calendar-wrap', 'block');
-          setDisplay('bk-prompt', 'flex');
           renderCalendar(currentMonth);
+          setDisplay('bk-pre-form', 'block');
+          setDisplay('bk-benefits', 'block');
         })
         .catch(function () {
           setDisplay('bk-loading', 'none');
           setDisplay('bk-fetch-error', 'flex');
         });
 
-      // Lead form
+      // Pre-form: collect data and show calendar
       document.getElementById('bk-lead-form').addEventListener('submit', function (e) {
         e.preventDefault();
-        if (!selectedSlot) return;
-
-        var errEl = document.getElementById('bk-form-error');
-        errEl.style.display = 'none';
-        var btn = e.target.querySelector('.bk-submit');
-        btn.disabled = true;
-        btn.textContent = 'Agendando...';
-
         var fd = new FormData(e.target);
         var consentText = 'Doy mi consentimiento para recibir un mensaje vía WhatsApp o una llamada de un representante.';
-        var body = JSON.stringify({ name: fd.get('name'), phone: fd.get('phone'), email: fd.get('email'), state: fd.get('state'), documents: fd.get('documents'), criminal_record: fd.get('criminal_record'), whatsapp_consent: fd.get('consent') === 'on', consent_timestamp: new Date().toISOString(), consent_text: consentText, appointment_datetime: selectedSlot.start_datetime });
+        preFormData = {
+          name: fd.get('name'),
+          phone: fd.get('phone'),
+          email: fd.get('email'),
+          state: fd.get('state'),
+          documents: fd.get('documents'),
+          criminal_record: fd.get('criminal_record'),
+          whatsapp_consent: fd.get('consent') === 'on',
+          consent_timestamp: new Date().toISOString(),
+          consent_text: consentText
+        };
+        gtag('event', 'profile_completed');
+        fbq('track', 'CompleteRegistration');
+        setDisplay('bk-pre-form', 'none');
+        setDisplay('bk-benefits', 'none');
+        setDisplay('bk-calendar-wrap', 'block');
+        setDisplay('bk-prompt', 'flex');
+      });
 
+      // Confirm booking after slot selected
+      window.bkConfirmBooking = function () {
+        if (!selectedSlot || !preFormData) return;
+        var errEl = document.getElementById('bk-form-error');
+        errEl.style.display = 'none';
+        var btn = document.getElementById('bk-confirm-btn');
+        btn.disabled = true;
+        btn.textContent = 'Agendando...';
+        var body = JSON.stringify(Object.assign({}, preFormData, { appointment_datetime: selectedSlot.start_datetime }));
         fetch(API_BASE + '/api/v1/public/pages/' + PAGE_SLUG + '/slots/' + selectedSlot.id + '/book', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -661,7 +730,7 @@
             errEl.textContent = err.message || 'Error al agendar. Intenta de nuevo.';
             errEl.style.display = 'block';
           });
-      });
+      };
     });
   })();
   </script>
