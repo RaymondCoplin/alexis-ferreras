@@ -215,6 +215,13 @@
 (function(){
   var v = document.getElementById('vsl-video');
   var ctaShown = false;
+  var videoPlayed = false;
+  v.addEventListener('play', function () {
+    if (!videoPlayed) {
+      videoPlayed = true;
+      gtag('event', 'video_play');
+    }
+  });
   v.addEventListener('timeupdate', function () {
     if (!ctaShown && v.currentTime >= 10) {
       ctaShown = true;
@@ -531,6 +538,7 @@
 
       setDisplay('bk-times-panel', 'none');
       setDisplay('bk-form', 'block');
+      gtag('event', 'appointment_selected');
     };
 
     window.bkBackToSlots = function () {
@@ -563,6 +571,18 @@
         var m = Math.abs(offset) % 60;
         var sign = offset >= 0 ? '+' : '-';
         tzEl.textContent = 'GMT' + sign + String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0') + ' ' + tz;
+      }
+
+      // Track booking section view
+      var bookingSection = document.getElementById('booking');
+      if (bookingSection && 'IntersectionObserver' in window) {
+        var bookingObserver = new IntersectionObserver(function (entries) {
+          if (entries[0].isIntersecting) {
+            gtag('event', 'booking_form_view');
+            bookingObserver.disconnect();
+          }
+        }, { threshold: 0.3 });
+        bookingObserver.observe(bookingSection);
       }
 
       // Fetch slots
@@ -623,6 +643,7 @@
           })
           .then(function () {
             fbq('track', 'Lead', { currency: 'USD', value: 0 });
+            gtag('event', 'lead_submitted');
             if (CONFIRM_SLUG) {
               window.location.href = '/p/' + CONFIRM_SLUG;
             } else {
