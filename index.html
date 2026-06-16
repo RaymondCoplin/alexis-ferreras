@@ -700,9 +700,12 @@
             return r.json();
           })
           .then(function (res) {
+            var isNew = !leadId;
             leadId = res.lead_id;
-            gtag('event', 'lead');
-            fbq('track', 'Lead', { currency: 'USD', value: 0 });
+            if (isNew) {
+              gtag('event', 'lead');
+              fbq('track', 'Lead', { currency: 'USD', value: 0 });
+            }
             setDisplay('bk-pre-form', 'none');
             renderCalendar(currentMonth);
             setDisplay('bk-calendar-panel', 'flex');
