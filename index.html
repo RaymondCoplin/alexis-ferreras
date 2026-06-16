@@ -448,7 +448,7 @@
     var selectedDate = null;
     var selectedSlot = null;
     var currentMonth = null;
-    var preFormData = null;
+    var leadId = null;
 
     var tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
@@ -667,12 +667,13 @@
           setDisplay('bk-fetch-error', 'flex');
         });
 
-      // Pre-form: collect data and show calendar
+      // Step 1: register lead, then show calendar
       document.getElementById('bk-lead-form').addEventListener('submit', function (e) {
         e.preventDefault();
         var fd = new FormData(e.target);
+        var submitBtn = e.target.querySelector('button[type="submit"]');
         var consentText = 'Doy mi consentimiento para recibir un mensaje vía WhatsApp o una llamada de un representante.';
-        preFormData = {
+        var payload = {
           name: fd.get('name'),
           phone: fd.get('phone'),
           email: fd.get('email'),
@@ -683,27 +684,47 @@
           consent_timestamp: new Date().toISOString(),
           consent_text: consentText
         };
-        gtag('event', 'profile_completed');
-        fbq('track', 'CompleteRegistration');
-        setDisplay('bk-pre-form', 'none');
-        setDisplay('bk-benefits', 'none');
-        setDisplay('bk-calendar-wrap', 'block');
-        setDisplay('bk-prompt', 'flex');
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Registrando...';
+
+        fetch(API_BASE + '/api/v1/public/pages/' + PAGE_SLUG + '/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        })
+          .then(function (r) {
+            if (!r.ok) throw new Error('Error al registrar. Intenta de nuevo.');
+            return r.json();
+          })
+          .then(function (res) {
+            leadId = res.lead_id;
+            gtag('event', 'lead');
+            fbq('track', 'Lead', { currency: 'USD', value: 0 });
+            setDisplay('bk-pre-form', 'none');
+            setDisplay('bk-benefits', 'none');
+            setDisplay('bk-calendar-wrap', 'block');
+            setDisplay('bk-prompt', 'flex');
+          })
+          .catch(function () {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Siguiente — Elige tu fecha →';
+            alert('Hubo un error al registrar tus datos. Por favor intenta de nuevo.');
+          });
       });
 
-      // Confirm booking after slot selected
+      // Step 2: book the selected slot using the registered lead_id
       window.bkConfirmBooking = function () {
-        if (!selectedSlot || !preFormData) return;
+        if (!selectedSlot || !leadId) return;
         var errEl = document.getElementById('bk-form-error');
         errEl.style.display = 'none';
         var btn = document.getElementById('bk-confirm-btn');
         btn.disabled = true;
         btn.textContent = 'Agendando...';
-        var body = JSON.stringify(Object.assign({}, preFormData, { appointment_datetime: selectedSlot.start_datetime }));
         fetch(API_BASE + '/api/v1/public/pages/' + PAGE_SLUG + '/slots/' + selectedSlot.id + '/book', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: body,
+          body: JSON.stringify({ lead_id: leadId, appointment_datetime: selectedSlot.start_datetime }),
         })
           .then(function (r) {
             if (r.status === 409) {
@@ -713,8 +734,8 @@
             return r.json();
           })
           .then(function () {
-            fbq('track', 'Lead', { currency: 'USD', value: 0 });
-            gtag('event', 'lead_submitted');
+            fbq('track', 'CompleteRegistration');
+            gtag('event', 'complete_registration');
             if (CONFIRM_SLUG) {
               window.location.href = '/p/' + CONFIRM_SLUG;
             } else {
