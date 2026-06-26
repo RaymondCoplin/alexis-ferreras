@@ -147,11 +147,15 @@
     .footer-top a:hover { text-decoration: underline; }
     .footer-sep { color: #bbb; }
     .footer-disclaimer { font-size: 11px; color: #999; max-width: 900px; margin: 0 auto; line-height: 1.75; text-align: left; }
+    .form-disclaimer-mobile { display: none; }
 
     @media (max-width: 768px) {
       .bk-card { flex-direction: column; border-radius: 12px; min-height: unset; }
       .bk-left { width: 100%; border-radius: 0; padding: 24px 20px; }
       .bk-host-sub, .bk-host-meta { display: none; }
+      .bk-benefit-extra { display: none !important; }
+      .footer-disclaimer-desktop { display: none; }
+      .form-disclaimer-mobile { display: block; }
       .bk-right { border-radius: 0; min-height: 360px; }
       .bk-day { font-size: 13px; min-height: 36px; }
       .bk-month-nav button { width: 36px; height: 36px; font-size: 22px; }
@@ -281,6 +285,15 @@
             <div style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:rgba(255,255,255,0.85);line-height:1.4;">
               <span style="color:#6C3CE1;font-size:15px;flex-shrink:0;">✅</span> Trabaja desde casa o donde quieras
             </div>
+            <div class="bk-benefit-extra" style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:rgba(255,255,255,0.85);line-height:1.4;">
+              <span style="color:#6C3CE1;font-size:15px;flex-shrink:0;">✅</span> Sin experiencia previa necesaria
+            </div>
+            <div class="bk-benefit-extra" style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:rgba(255,255,255,0.85);line-height:1.4;">
+              <span style="color:#6C3CE1;font-size:15px;flex-shrink:0;">✅</span> Entrenamiento completo incluido
+            </div>
+            <div class="bk-benefit-extra" style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:rgba(255,255,255,0.85);line-height:1.4;">
+              <span style="color:#6C3CE1;font-size:15px;flex-shrink:0;">✅</span> Flexibilidad de horario total
+            </div>
           </div>
         </div>
         <div style="margin-top:14px;font-size:11px;color:rgba(255,255,255,0.35);" id="bk-tz-value"></div>
@@ -364,7 +377,7 @@
             </div>
             <button type="submit" class="bk-submit">Reservar mi lugar →</button>
           </form>
-          <p style="font-size:12px;color:#aaa;text-align:center;margin-top:14px;line-height:1.6;">Sin experiencia previa requerida. Te entrenamos, te licenciamos y te damos las herramientas para triunfar en el sector seguros.</p>
+          <p class="form-disclaimer-mobile" style="font-size:12px;color:#aaa;text-align:center;margin-top:14px;line-height:1.6;">Sin experiencia previa requerida. Te entrenamos, te licenciamos y te damos las herramientas para triunfar en el sector seguros.</p>
         </div>
         <!-- Calendar panel: shown after pre-form -->
         <div class="bk-calendar-panel" id="bk-calendar-panel" style="display:none">
@@ -434,6 +447,7 @@
       <span>Creado por <a href="https://perxist.com" target="_blank" rel="noopener">Perxist</a></span>
     </div>
     <p class="footer-disclaimer">Los ingresos mencionados son ejemplos de agentes reales y no garantizan resultados iguales. Los resultados dependen del esfuerzo individual, el mercado y otros factores. Esta es una oportunidad de negocio independiente, no un empleo con salario fijo.</p>
+    <p class="footer-disclaimer footer-disclaimer-desktop" style="margin-top:10px;">Sin experiencia previa requerida. Te entrenamos, te licenciamos y te damos las herramientas para triunfar en el sector seguros.</p>
   </footer>
 
   <script>
